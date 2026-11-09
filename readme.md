@@ -1,137 +1,86 @@
-> Pennywise is not maintained, check out my other project [Always on Top](https://alwaysontop.app)
+# Pennywise (macOS, 2026 refresh)
 
-<a href="https://alwaysontop.app"><img width="3840" height="834" alt="image" src="https://github.com/user-attachments/assets/fcfdf251-0f4f-4a2a-a0f3-d8421c878f4f" /></a>
+A small always-on-top browser for macOS. Browse normally, then flip any stream
+into **Focus** to see just the video, with an optional **chat panel** for Twitch
+and YouTube live streams.
 
-<br /><br />
-
-<p align="center">
-  <img src="https://i.imgur.com/bKsns66.png" height="148">
-  <h2 align="center">Pennywise</h2>
-  <p align="center">Cross-platform application to open website or media in a floating window<p>
-  <p align="center">
-    <a href="https://github.com/kamranahmedse/pennywise/blob/master/license">
-      <img src="https://img.shields.io/badge/License-MIT-yellow.svg" />
-    </a>
-    <a href="https://github.com/kamranahmedse/pennywise/releases">
-    	<img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-blue.svg" alt="platforms" />
-    </a>
-    <a href="https://github.com/kamranahmedse/pennywise/releases">
-	    <img src="https://img.shields.io/github/downloads/kamranahmedse/pennywise/total.svg" alt="prs welcome">
-    </a>
-  </p>
-</p>
-
-Pennywise opens any website or media in a **small floating window that remains on top of all other applications**. Pennywise windows stays up **all the time**. No need to keep struggling with <kbd>alt + tab</kbd>, use Pennywise for **easy multitasking**.
+Modernised fork of [kamranahmedse/pennywise](https://github.com/kamranahmedse/pennywise):
+Electron 45 (Chromium 156), no React/CRA, macOS only.
 
 ## Features
-* Always **stays on top** of any open applications
-* **Adjustable opacity** – it gets out of your way while you work
-* **Resize and place** it anywhere
-* **Shortcuts** to make you more productive
-* Lets you **multitask** while you work
-* **Open source** licensed under MIT
-* **Lean** small resource footprint, minimal User Interface.
-* **Cross-platform** works on MacOS, Windows and Linux
 
-## Installation
+- **Normal mode**: a regular browser with back/forward/reload and an address bar.
+- **Focus mode** (`⇧⌘F`): just the stream, edge to edge.
+  - Twitch channels and VODs switch to Twitch's own popout player.
+  - YouTube watch and live pages keep the page and isolate the player (no reload).
+  - Other sites: the largest video on the page fills the window.
+  - The toolbar hides; move the pointer to the top edge to bring it back.
+  - The player's own fullscreen button also enters Focus instead of a new macOS Space.
+- **Chat panel** (`⇧⌘K`): Twitch chat or YouTube live chat beside the player.
+  Resize it with `⌥⌘←` / `⌥⌘→`.
+- **Stays signed in**: log in to Twitch and YouTube once, inside the app.
+  Turbo, subscriptions and YouTube Premium apply as usual (no ads).
+- **Ad blocking** (on by default; app menu → Block Ads): network and cosmetic
+  filtering (uBlock/EasyList lists), plus a YouTube-specific defuser that
+  strips pre-rolls and skips any that slip through.
+- **Float on top** (`⇧⌘P`), optionally over full-screen apps.
+- **Opacity** (`⇧⌘↑` / `⇧⌘↓`, or the toolbar slider).
+- **Click-through mode** (`⇧⌘D`, works globally to turn it off again).
+- Remembers window position, size, mode, opacity and the last page.
 
-Download and install the relevant distribution from the [releases page](http://github.com/kamranahmedse/pennywise/releases).
-
-If you are on MacOS, you can use [Homebrew](https://brew.sh/) to install it
-
-```
-brew install --cask pennywise
-```
-
-### Enable Flash Support
-
-To enable flash support, copy or link Chrome's Pepperflash plugin into your $HOME/.pennywise-flash. You can find the plugin at the installation path of the Chrome. For example, on MacOS, you can do the below to enable Flash support
-
-```
-ln -s ~/Library/Application\ Support/Google/Chrome/PepperFlash/[version]/PepperFlashPlayer.plugin" ~/.pennywise-flash
-```
-
-## Usecases
-
-> Here is the list of some of the possible use cases off the top of my head
-
-* Use it as a floating window for your calendar/checklist/assigned-tickets etc
-* Watching tutorial while you code? Open the video in Pennywise and keep it in front of you
-* Making a video course? Open the demo in Pennywise and show the output in real time
-* Working on some web UI? Open it in Pennywise to avoid pressing <kbd>alt + tab</kbd> again and again
-* Play some video, watch some talk or play some TV series while you work
-* Working on something non-familiar? Open the docs in Pennywise
-* Open that live football match that you won't want to miss
-* Use it as a desktop widget
-
-## Development
-
-Clone the repository, install the dependencies and start the app
+## Run / build
 
 ```bash
-yarn install
-yarn start
+npm install
+npm start          # run from source
+npm test           # URL / site-detection tests
+npm run dist       # dist/Pennywise-<ver>-arm64.dmg (+ .zip)
+```
+
+The build is ad-hoc signed (not notarised). On first launch, right-click →
+Open, or run `xattr -dr com.apple.quarantine /Applications/Pennywise.app`.
+
+## Opening links from elsewhere
+
+```bash
+open "pennywise://open?url=https://twitch.tv/somechannel&focus=1"
+curl "http://127.0.0.1:6280/?url=https://youtu.be/VIDEO_ID&focus=1"
+/Applications/Pennywise.app/Contents/MacOS/Pennywise --url https://twitch.tv/x --focus
 ```
 
 ## Shortcuts
 
-> Here is the list of available shortcuts that you may use
+| Shortcut | Action |
+| --- | --- |
+| `⇧⌘F` | Toggle Focus / Browser mode |
+| `⇧⌘K` | Show / hide chat |
+| `⌥⌘←` `⌥⌘→` | Wider / narrower chat |
+| `⌘L` | Address bar |
+| `⌘[` `⌘]` | Back / forward |
+| `⌘R` / `⇧⌘R` | Reload / hard reload |
+| `⇧⌘P` | Float on top |
+| `⇧⌘↑` `⇧⌘↓` | Opacity |
+| `⇧⌘D` | Click-through mode |
+| `⇧⌘H` | Start page |
+| `⇧⌘O` | Open the page in your default browser |
 
-| **Shortcut**                       | **Description**                  |
-|------------------------------------|----------------------------------|
-| <kbd>Cmd/Ctrl + L</kbd>            | Show Navbar and focus URL input  |
-| <kbd>Cmd/Ctrl + Shift + D</kbd>    | Enable detached mode             |
-| <kbd>Cmd/Ctrl + M</kbd>            | Refresh Page                     |
-| <kbd>Cmd/Ctrl + Shift + L</kbd>    | Toggle Navbar on WebPages        |
-| <kbd>Cmd/Ctrl + Shift + Up</kbd>   | Increase Opacity                 |
-| <kbd>Cmd/Ctrl + Shift + Down</kbd> | Decrease Opacity                 |
-| <kbd>Cmd/Ctrl + Alt + I</kbd>      | Show Developer Tools             |
-| <kbd>Cmd/Ctrl + [0-9]</kbd>        | Switch Window Opacity            |
+## Notes
 
-> **Note** – Changing the opacity is only supported in Windows and MacOS
+- Twitch inserts ads into the video stream server-side, so the ad blocker can't
+  remove them. Being signed in with Turbo or a sub to the channel can.
+- Sign-in popups (Google, Twitch, Apple…) open in a small window that shares
+  the same profile. *Clear Browsing Data…* in the app menu signs you out everywhere.
 
-**Detached Mode** 
-* Enabling the detached mode makes Pennywise non-interactive – it will let any interactions fall through to the window below it. To remove the detached mode, focus the window either by clicking the dock icon or by activating it using <kbd>alt + tab</kbd>
+## Layout
 
-## Screenshots
+```
+app/main.js          window, views, modes, chat, IPC, URL server
+app/sites.js         URL normalising + Twitch/YouTube detection (pure, tested)
+app/focus.js         CSS/JS that isolates the player in Focus mode
+app/page-preload.js  YouTube ad defuser (document-start)
+app/adblock.js       Ghostery adblock engine (cached in userData)
+app/menu.js          menu bar
+app/ui/              toolbar + start page (plain HTML/CSS/JS)
+```
 
-> Homescreen for the application
-
-![](https://i.imgur.com/u7fAT99.png)
-
-![](https://i.imgur.com/CeLYoux.png?1)
-
-> Anything running in pennywise stays on top of everything
-
-![](https://i.imgur.com/BbqZmcK.png)
-
-![](https://i.imgur.com/8VDKGYX.png)
-
-> You can change the opacity too
-
-![](https://i.imgur.com/Xa7inTY.png)
-
-![](https://i.imgur.com/9D3gZwn.png)
-
-## Auto-embed Videos
-For some video streaming websites such as Youtube, Vimeo, Twitch, Daily Motion etc, Pennywise shows you the video only web page by default (using the auto-generated embed links), showing you the video in a distract free manner. You can disable that by toggling the `Edit > Embed Videos`.
-
-> **Note** – In case of youtube, [it might not work sometime](https://github.com/kamranahmedse/pennywise/issues/62) when the user has put restrictions on the video – in that case, you will have to disable "Auto Embed" option from the Edit menu to make them work. 
-
-#### Why is it named Pennywise?
-
-Because the application helps in floating and [Pennywise loved to do that](http://www.youtube.com/watch?v=WzjWMLv_ZJI&t=3m15s)
-
-![](https://i.imgur.com/bN2ixL7.gif)
-
-## Planned Roadmap
-
-* [ ] Persist options and linking options to website
-* [ ] Bookmarking links for later use
-* [ ] Write tests
-
-## Contributions
-Feel free to implement anything from the roadmap, submit pull requests, create issues, discuss ideas or spread the word.
-
-## License
-MIT &copy; [Kamran Ahmed](https://twitter.com/kamranahmedse)
+MIT. Original © Kamran Ahmed.
